@@ -28,7 +28,9 @@ function App() {
         {id: 1, title: 'CSS', isDone: true},
         {id: 2, title: 'JS', isDone: true},
         {id: 3, title: 'React', isDone: false},
-        {id: 4, title: 'Redux', isDone: false}
+        {id: 4, title: 'Redux', isDone: false},
+        {id: 5, title: 'Rest API', isDone: false},
+        {id: 6, title: 'GraphQl', isDone: false}
     ]
 
     let [tasks, setTasks] = useState(tasks1)
@@ -65,10 +67,10 @@ function App() {
 
     let tasksForTodolist = tasks
     if (filter === 'done') {
-        tasksForTodolist = tasks.filter(t => t.isDone === true)
+        tasksForTodolist = tasks.filter(t => t.isDone)
     }
     if (filter === 'active') {
-        tasksForTodolist = tasks.filter(t => t.isDone === false)
+        tasksForTodolist = tasks.filter(({isDone}) => !isDone)
     }
     return (
         <>
