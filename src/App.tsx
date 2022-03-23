@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import {TasksType, Todolist} from "./TodoList";
-
+import {TasksType, Todolist} from './TodoList';
+import {v1} from 'uuid';
+import set = Reflect.set;
 
 
 // export const Counter = () => {
@@ -23,28 +24,41 @@ import {TasksType, Todolist} from "./TodoList";
 
 
 export type FilterValuesType = 'All' | 'done' | 'active'
+
 function App() {
     const tasks1: TasksType[] = [
-        {id: 1, title: 'CSS', isDone: true},
-        {id: 2, title: 'JS', isDone: true},
-        {id: 3, title: 'React', isDone: false},
-        {id: 4, title: 'Redux', isDone: false},
-        {id: 5, title: 'Rest API', isDone: false},
-        {id: 6, title: 'GraphQl', isDone: false}
+        {id: v1(), title: 'CSS', isDone: true},
+        {id: v1(), title: 'JS', isDone: true},
+        {id: v1(), title: 'React', isDone: false},
+        {id: v1(), title: 'Redux', isDone: false},
+        {id: v1(), title: 'Rest API', isDone: false},
+        {id: v1(), title: 'GraphQl', isDone: false}
     ]
 
     let [tasks, setTasks] = useState(tasks1)
     let [filter, setFilter] = useState<FilterValuesType>('All')
 
+    // console.log(tasks)
     // let tasks = arr[0]
     // let setTasks = arr[1]
 
-    const removeTask = (id: number) => {
-        let filteredTasks = tasks.filter(t => t.id != id)
+    const removeTask = (id: string) => {
+        let filteredTasks = tasks.filter(t => t.id !== id)
         setTasks(filteredTasks)
     }
 
-    const checkChange = (isChecked: boolean, id: number) => {
+    const addTask = (title: string) => {
+        let newTask = {
+            id: v1(),
+            title: title,
+            isDone: false
+        }
+
+        let newTasks = [newTask, ...tasks]
+        setTasks(newTasks)
+    }
+
+    const checkChange = (isChecked: boolean, id: string) => {
         setTasks(tasks.map((task) => task.id === id
             ? {...task, isDone: isChecked}
             : task))
@@ -82,6 +96,7 @@ function App() {
                       reverseCheckAll={reverseCheckAll}
                       unCheckAll={unCheckAll}
                       changeFilter={changeFilter}
+                      addTask={addTask}
             />
         </>
     );
