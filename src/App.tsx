@@ -20,27 +20,22 @@ function App() {
     let [filter, setFilter] = useState<FilterValuesType>('All')
 
     const addTask = (title: string) => {
-        let newTask = {
-            id: v1(),
-            title: title,
-            isDone: false
-        }
-
-        let newTasks = [newTask, ...tasks]
+        let newTasks = [{id: v1(), title, isDone: false}, ...tasks]
         setTasks(newTasks)
     }
 
-    const checkAll = () => setTasks(tasks.map((task) => (
-        {...task, isDone: true}
-    )));
+    const removeTask = (id: string) => {
+        let filteredTasks: TasksType[] = tasks.filter(t => t.id !== id)
+        setTasks(filteredTasks)
+    }
 
-    const reverseCheckAll = () => setTasks(tasks.map((task) => (
-        {...task, isDone: !task.isDone}
-    )));
-
-    const unCheckAll = () => setTasks(tasks.map((task) => (
-        {...task, isDone: false}
-    )));
+    const checkChange = (taskId: string, isDone: boolean) => {
+        let finedTask = tasks.find( t => t.id === taskId)
+        if (finedTask) {
+            finedTask.isDone = isDone
+        }
+        setTasks([...tasks])
+    }
 
     const changeFilter = (value: FilterValuesType) => {
         setFilter(value)
@@ -57,14 +52,14 @@ function App() {
     return (
         <>
             <Todolist title='what to learn?'
-                      tasksForTodolist={tasksForTodolist}
-                      checkAll={checkAll}
-                      reverseCheckAll={reverseCheckAll}
-                      unCheckAll={unCheckAll}
-                      changeFilter={changeFilter}
-                      addTask={addTask}
                       tasks={tasks}
+                      filter={filter}
+                      tasksForTodolist={tasksForTodolist}
                       setTasks={setTasks}
+                      addTask={addTask}
+                      removeTask={removeTask}
+                      checkChange={checkChange}
+                      changeFilter={changeFilter}
             />
         </>
     );

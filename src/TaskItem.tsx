@@ -5,35 +5,26 @@ type TaskItemPropsType = {
     task: TasksType
     tasks: TasksType[]
     setTasks: (tasks: TasksType[]) => void
+    removeTask: (id: string) => void
+    checkChange: (id: string, isChecked: boolean) => void
 }
 
-export const TaskItem = (props: TaskItemPropsType) => {
+export const TaskItem: React.FC<TaskItemPropsType> = (props) => {
 
-    const checkChange = (isChecked: boolean, id: string) => {
-        props.setTasks(props.tasks.map((task) => task.id === id
-            ? {...task, isDone: isChecked}
-            : task))
+    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        props.checkChange(props.task.id, event.currentTarget.checked)
+
     }
-
-    const removeTask = (id: string) => {
-        let filteredTasks: TasksType[] = props.tasks.filter(t => t.id !== id)
-        props.setTasks(filteredTasks)
-    }
-
-    const changeCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-        checkChange(event.target.checked, props.task.id)
-    }
-
     return (
-        <li>
+        <li className={props.task.isDone? 'is-done' : ''}>
             <input
                 className={'checkbox'}
                 type="checkbox"
                 checked={props.task.isDone}
-                onChange={changeCheckbox}
+                onChange={onChangeHandler}
             />
             <span>{props.task.title}</span>
-            <button className={'removeButton'} onClick={() => removeTask(props.task.id)}>x</button>
+            <button className={'removeButton'} onClick={() => props.removeTask(props.task.id)}>x</button>
         </li>
     )
 }
