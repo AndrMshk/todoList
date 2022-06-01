@@ -10,7 +10,9 @@ type ActionsType =
   | AddTodolistActionType
   | RemoveTodolistActionType
 
-export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
+const initialState: TasksStateType = {};
+
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
   switch (action.type) {
     case 'REMOVE-TASK':
       return { ...state, [action.todolistId]: state[action.todolistId].filter(el => el.id !== action.taskId) };
@@ -34,8 +36,8 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
     case 'ADD-TODOLIST':
       return { ...state, [action.todolistId]: [] };
     case 'REMOVE-TODOLIST':
-      const { [action.id]: [], ...rest } = { ...state };
-      Object.keys(state).filter(a => a !== action.id)
+      const { [action.id]: [], ...rest } = state;
+      // Object.keys(state).filter(a => a !== action.id)
       return rest;
     default:
       return state;
@@ -55,5 +57,3 @@ export const changeTaskStatusAC = (todolistId: string, taskId: string, isDone: b
   { type: 'CHANGE-TASK-STATUS', todolistId, taskId, isDone } as const);
 export const changeTaskTitleAC = (todolistId: string, taskId: string, newTaskTitle: string) => (
   { type: 'CHANGE-TASK-TITLE', todolistId, taskId, newTaskTitle } as const);
-
-// области видимости переменных, жизниенный цыклы, методы жизн циклов
