@@ -21,6 +21,8 @@ type PropsType = {
 
 export function TodolistWithTasks({ todolist }: PropsType) {
 
+  // tdl.filter === 'All'? t : tdl.filter === 'Active' && !t.isDone ? t : tdl.filter === 'Completed' && t.isDone
+
   let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolist.id]);
 
   if (todolist.filter === 'active') {
