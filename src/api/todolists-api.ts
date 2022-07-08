@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { RequestStatusType } from '../app/bll/app-reducer';
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -33,9 +34,7 @@ export const todolistsAPI = {
     return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>(
       `todo-lists/${todolistId}/tasks`, { title });
   },
-  updateTask(
-    todolistId: string, taskId: string,
-    model: { addedDate: string; todoListId: string; description: string; id: string; title: string; priority: TaskPriorities; deadline: string; startDate: string; status: TaskStatuses; order: number }) {
+  updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
     return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(
       `todo-lists/${todolistId}/tasks/${taskId}`, model);
   },
@@ -81,6 +80,7 @@ export type TaskType = {
   todoListId: string
   order: number
   addedDate: string
+  entityStatus: RequestStatusType
 }
 export type UpdateTaskModelType = {
   title: string
